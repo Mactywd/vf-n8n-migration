@@ -228,7 +228,7 @@ Finish Perfume Creation → Perfume Intensity → Additional Notes → Naming Ri
 
 | node_id | type | config summary | ports → next |
 |---------|------|----------------|--------------|
-| `69762178` | response-prompt | agent prompt: "Untitled prompt" | `next` → New Block 74 |
+| `69762178` | response-prompt | agent prompt: "Additional Notes Question" | `next` → New Block 74 |
 
 ### Block: Perfume Intensity
 **ID:** `68d939e9`  **Coords:** `[1185, -342]`  **Steps:** 1
@@ -239,7 +239,7 @@ Finish Perfume Creation → Perfume Intensity → Additional Notes → Naming Ri
 
 | node_id | type | config summary | ports → next |
 |---------|------|----------------|--------------|
-| `692aaf41` | response-prompt | agent prompt: "Untitled prompt" | `next` → New Block 74 |
+| `692aaf41` | response-prompt | agent prompt: "Final Perfume Intensity" | `next` → New Block 74 |
 
 ### Block: New Block 52
 **ID:** `6902724d`  **Coords:** `[1224, 3564]`  **Steps:** 1
@@ -253,7 +253,7 @@ Finish Perfume Creation → Perfume Intensity → Additional Notes → Naming Ri
 
 | node_id | type | config summary | ports → next |
 |---------|------|----------------|--------------|
-| `692aa7dd` | response-prompt | agent prompt: "Untitled prompt" | `next` → New Block 27 |
+| `692aa7dd` | response-prompt | agent prompt: "Ask Essence Name" | `next` → New Block 27 |
 
 ### Block: New Block 27
 **ID:** `68c075ec`  **Coords:** `[1314, 2013]`  **Steps:** 2
@@ -363,14 +363,16 @@ Finish Perfume Creation → Perfume Intensity → Additional Notes → Naming Ri
 ### Block: Base Essence Validator
 **ID:** `68879a15`  **Coords:** `[1730, 902]`  **Steps:** 2
 
-**Purpose:** Sets `enough_info` via agent response, then branches: if `enough_info == "avanti"` → Retireve Memory Info; if KB search needed → KB Search (sub-flow); else → Essence Follow Up (more questions).
+**Purpose:** Sets `enough_info` via agent response, then branches: if `enough_info == "avanti"` → Retireve Memory Info; if KB search needed → KB Search then JSON carousel (sequential sub-flow calls); else → Essence Follow Up (more questions).
 
-**Exits to:** Retireve Memory Info, KB Search, Essence Follow Up
+**Exits to:** Retireve Memory Info, KB Search → JSON carousel pipeline, Essence Follow Up
 
 | node_id | type | config summary | ports → next |
 |---------|------|----------------|--------------|
 | `688a1951` | set-v3 | enough_info = '6907624e353d04e3f7b4fbf6' | — |
-| `68879f1c` | condition-v3 | if enough_info == "[{'text': ['avanti']" | `cmdnar80h00m` → call: KB Search, `if enough_info=="[{'text': ['ava"` → Retireve Memory Info, `else` → Essence Follow Up |
+| `68879f1c` | condition-v3 | if enough_info == "[{'text': ['avanti']" | `cmdnar80h00m` → `6887a40a` (actions container), `if enough_info=="[{'text': ['ava"` → Retireve Memory Info, `else` → Essence Follow Up |
+| `6887a40a` | component | *(in standalone actions container — step 1 of 2)* call diagram: KB Search (48-node) | → `6887a417` |
+| `6887a417` | component | *(in standalone actions container — step 2 of 2)* call diagram: JSON list to carousel | → (continues flow) |
 
 ### Block: Retireve Memory Info
 **ID:** `688f26b0`  **Coords:** `[1737, 1227]`  **Steps:** 2
@@ -405,7 +407,7 @@ Finish Perfume Creation → Perfume Intensity → Additional Notes → Naming Ri
 
 | node_id | type | config summary | ports → next |
 |---------|------|----------------|--------------|
-| `697dd0d1` | response-prompt | agent prompt: "Untitled prompt" | `next` → New Block 91 |
+| `697dd0d1` | response-prompt | agent prompt: "Essence Selector" | `next` → New Block 91 |
 
 ### Block: New Block 91
 **ID:** `697dce43`  **Coords:** `[1859, 1763]`  **Steps:** 1
@@ -569,7 +571,7 @@ essenceName = essence["N | `next` → New Block 87 |
 
 | node_id | type | config summary | ports → next |
 |---------|------|----------------|--------------|
-| `692750e8` | response-prompt | agent prompt: "Untitled prompt" | — |
+| `692750e8` | response-prompt | agent prompt: "Perfume Notes" | — |
 | `6916dc15` | set-v3 | perfume_description = '6916d96fef4c3b7b2c390072' | `next` → New Block 58 |
 
 ### Block: New Block 51
@@ -694,9 +696,9 @@ failedIter | `next` → New Block 58 |
 ### Block: New Block 83
 **ID:** `695a90ce`  **Coords:** `[3616, 148]`  **Steps:** 1
 
-**Purpose:** Sets `chosenPath = "Memoria"` and `pathInfoField = "Ricordo"`, then jumps to Memory Path Intro.
+**Purpose:** Sends a static message and ends the flow (dead-end / fallback branch).
 
-**Exits to:** → Memory Path Intro (goToNode)
+**Exits to:** (end flow)
 
 | node_id | type | config summary | ports → next |
 |---------|------|----------------|--------------|
@@ -718,7 +720,7 @@ failedIter | `next` → New Block 58 |
 
 | node_id | type | config summary | ports → next |
 |---------|------|----------------|--------------|
-| `690f8540` | response-prompt | agent prompt: "Untitled prompt" | — |
+| `690f8540` | response-prompt | agent prompt: "Amplify or Go On" | — |
 | `690f858f` | set-v3 | italian_labels = 'Intensificare,Stessa Intensità', english_labels = 'Intensify,Same Intensity' | — |
 | `690f85a6` | component | call diagram: Show Lamguage Buttons | — |
 | `690f85b1` | condition-v3 | if final_label == "[{'text': ['Intensif" / final_label == "[{'text': ['Stessa I" | `if final_label=="[{'text': ['Int"` → New Block 74, `if final_label=="[{'text': ['Ste"` → Finish Perfume Creation |
@@ -763,7 +765,7 @@ failedIter | `next` → New Block 58 |
 
 | node_id | type | config summary | ports → next |
 |---------|------|----------------|--------------|
-| `693d85d6` | response-prompt | agent prompt: "Untitled prompt" | — |
+| `693d85d6` | response-prompt | agent prompt: "Potenziare Categoria" | — |
 | `693d8444` | set-v3 | categories = '693d81a4d708c2f74ae3b605' | — |
 | `693d8467` | function | function: Show Buttons | `default` → New Block 75 |
 
@@ -781,7 +783,7 @@ failedIter | `next` → New Block 58 |
 
 | node_id | type | config summary | ports → next |
 |---------|------|----------------|--------------|
-| `69762dbe` | response-prompt | agent prompt: "Untitled prompt" | `next` → New Block 83 |
+| `69762dbe` | response-prompt | agent prompt: "Fragrance Path Essence Prompter" | `next` → New Block 83 |
 
 ### Block: New Block 67
 **ID:** `691de540`  **Coords:** `[4439, 5361]`  **Steps:** 1
@@ -836,7 +838,7 @@ failedIter | `next` → New Block 58 |
 
 | node_id | type | config summary | ports → next |
 |---------|------|----------------|--------------|
-| `69272e75` | response-prompt | agent prompt: "Untitled prompt" | — |
+| `69272e75` | response-prompt | agent prompt: "Describe non-NdC perfume" | — |
 | `697f844a` | function | function: Create Essence Buttons | `68b8aec1d930` → New Block 3 |
 
 ### Block: New Block 3
@@ -851,9 +853,9 @@ failedIter | `next` → New Block 58 |
 ### Block: New Block 83
 **ID:** `6948107e`  **Coords:** `[5024, 4767]`  **Steps:** 1
 
-**Purpose:** Sets `chosenPath = "Memoria"` and `pathInfoField = "Ricordo"`, then jumps to Memory Path Intro.
+**Purpose:** Builds the essence carousel data structure. Routes to New Block 74 (carousel interaction).
 
-**Exits to:** → Memory Path Intro (goToNode)
+**Exits to:** New Block 74
 
 | node_id | type | config summary | ports → next |
 |---------|------|----------------|--------------|
