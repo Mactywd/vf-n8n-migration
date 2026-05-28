@@ -37,49 +37,44 @@ Questo documento descrive (1) i compromessi inevitabili imposti dall'architettur
 
 ---
 
-### 4. Routing AI — output paths impliciti
+### 4. Routing AI — structured output parser
 
-**Voiceflow:** gli agenti hanno output paths espliciti cablati visualmente nel flow editor (es. "Route to Memory", "Route to Inspiration"). Il motore di routing è deterministico.  
-**n8n:** l'AI Agent genera testo libero. La decisione di routing deve essere estratta dall'output dell'agente (parsing JSON strutturato, o campo dedicato come `{ "path": "memory" }`).
+**Voiceflow:** gli agenti hanno output paths espliciti cablati visualmente nel flow editor (es. "Route to Memory", "Route to Inspiration").  
+**n8n:** la maggior parte del routing è già **deterministica tramite bottoni** cliccati dall'utente — non serve un agente per decidere. Nessun compromesso qui.
 
-**Impatto:** gli agenti che prendono decisioni di routing (Routing Agent, Sorting Agent, Memory Extraction Agent) devono essere configurati con un system prompt che impone output strutturato. Esempio:
+Per i pochi agenti che effettivamente prendono una decisione testuale autonoma (es. Memory Extraction Agent che decide quando ha abbastanza informazioni), si usa il **structured output parser con auto-fix** disponibile nativamente in n8n. L'agente viene istruito a rispondere in JSON, e il parser tenta la correzione automatica in caso di output malformato.
 
-```
-Rispondi SEMPRE in formato JSON:
-{
-  "message": "testo per l'utente",
-  "path": "memory" | "inspiration" | "renaissance"
-}
-```
-
-Il Code node successivo estrae `path` e alimenta un Switch node. Questo è un pattern consolidato in n8n ma richiede attenzione nel prompt engineering.
+**Impatto:** minimo — il pattern structured output è built-in e robusto. Nessun prompt engineering critico richiesto.
 
 ---
 
-### 5. Buttons e Carousel — rendering delegato al frontend
+### 5. Cambio formato payload buttons/carousel
 
-**Voiceflow:** bottoni e carousel sono tipi nativi del widget Voiceflow, renderizzati automaticamente.  
-**n8n:** il workflow restituisce strutture JSON (`buttons[]`, `carousel`). Il frontend deve implementare il rendering di questi componenti.
-
-**Impatto:** lavoro frontend aggiuntivo. I componenti devono rispettare la struttura definita nel payload API (vedi design spec).
+**Non è un compromesso** — il frontend gestisce già il rendering. L'unica modifica necessaria è adattare il formato del JSON ricevuto da Voiceflow a quello definito nel design spec. Lavoro puramente meccanico di parsing.
 
 ---
 
-### 6. KB Search — latenza Qdrant vs Voiceflow KB nativa
-
-**Voiceflow:** la KB è co-locata con il runtime, lookup ottimizzato.  
-**n8n:** Qdrant su Hetzner, chiamata HTTP interna. L'agente KB può fare più ricerche in autonomia.
-
-**Impatto:** latenza aggiuntiva stimata 50-200ms per ricerca Qdrant. Con l'agente AI che gestisce query e valutazione, un ciclo KB completo può richiedere 3-8s. Accettabile per un'esperienza conversazionale (l'utente si aspetta qualche secondo di attesa).
-
----
-
-### 7. Sessioni abbandonate — cleanup necessario
+### 6. Sessioni abbandonate — cleanup necessario
 
 **Voiceflow:** la sessione scade automaticamente.  
 **n8n:** le righe nella tabella `sessions` persistono indefinitamente senza cleanup.
 
 **Impatto:** la tabella cresce nel tempo. Serve un workflow schedulato (cron) che elimina sessioni con `updated_at` più vecchio di N ore (es. 24h). Da implementare come workflow utility separato.
+
+---
+
+### 7. Evaluations — da configurare manualmente
+
+**Voiceflow:** al termine di ogni conversazione, Voiceflow esegue evaluations automatiche (qualità delle risposte, soddisfazione, completamento journey, ecc.) tramite il pannello Analytics nativo.  
+**n8n:** nessuna evaluation automatica. Bisogna costruirla.
+
+**Cosa serve:**
+- Al termine di ogni conversazione (step `completed`), ROOT trigghera un workflow separato `evaluation`
+- Il workflow riceve il `generalInfo` completo e la storia della sessione
+- Chiama un AI Agent che valuta la qualità della conversazione su criteri definiti (completezza delle essenze raccolte, coerenza del percorso, soddisfazione stimata, ecc.)
+- Salva i risultati in una tabella Postgres `evaluations` o li invia a un sistema esterno (Directus, foglio Google, webhook)
+
+**Impatto:** lavoro aggiuntivo ma porta più controllo — i criteri di valutazione possono essere personalizzati rispetto a quelli generici di Voiceflow.
 
 ---
 
