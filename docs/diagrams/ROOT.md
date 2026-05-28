@@ -38,24 +38,24 @@ Finish Perfume Creation → Perfume Intensity → Additional Notes → Naming Ri
 
 ## Node Count by Type
 
-| Type | Count | n8n equivalent |
-|------|-------|----------------|
-| `block` | 101 | Workflow group / sticky note boundary |
-| `set-v3` | 55 | Set node |
-| `response-prompt` | 27 | AI Agent node (LLM call) |
-| `function` | 26 | Code node (JS function call) |
-| `actions` | 21 | Internal wrapper container |
-| `component` | 17 | Execute Workflow (sub-flow call) |
-| `condition-v3` | 16 | If / Switch node |
-| `goToNode` | 15 | Execute Workflow / jump |
-| `capture-v3` | 9 | Wait for webhook |
-| `markup_text` | 8 | Sticky note (visual label, no logic) |
-| `kb-search` | 6 | HTTP Request to Voiceflow KB API |
-| `exit` | 5 | End node |
-| `message` | 4 | Send Message node |
-| `code` | 2 | Code node (inline JS) |
-| `api-v2` | 1 | HTTP Request (Exa.ai search) |
-| `start` | 1 | Trigger node |
+| Type | Count |
+|------|-------|
+| `block` | 101 |
+| `set-v3` | 55 |
+| `response-prompt` | 27 |
+| `function` | 26 |
+| `actions` | 21 |
+| `component` | 17 |
+| `condition-v3` | 16 |
+| `goToNode` | 15 |
+| `capture-v3` | 9 |
+| `markup_text` | 8 |
+| `kb-search` | 6 |
+| `exit` | 5 |
+| `message` | 4 |
+| `code` | 2 |
+| `api-v2` | 1 |
+| `start` | 1 |
 
 ---
 

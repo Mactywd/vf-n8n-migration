@@ -56,12 +56,3 @@ export default async function main(args) {
 	}
 }
 ```
-
-### n8n Migration Notes
-
-- Map to: Code node (JavaScript mode)
-- Input variables: access as `$input.first().json.labels`
-- Output: the `buttons` array should be returned as `return [{ json: { buttons } }]` and forwarded to the chat interface node
-- The `type: "choice"` trace is Voiceflow-specific; in n8n map to quick-reply buttons in the messaging platform (WhatsApp list/button message, Telegram inline keyboard, etc.)
-- Each button carries only a `label` in its intent payload — no entity data; this is a simpler variant compared to carousel buttons
-- No output variable mapping in diagram (pure trace-based rendering); the user's response is captured by the next `capture-v3` / webhook wait node

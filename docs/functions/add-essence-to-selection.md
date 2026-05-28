@@ -40,12 +40,3 @@ export default async function main(args) {
     }
 }
 ```
-
-### n8n Migration Notes
-
-- Map to: Code node (JavaScript mode)
-- Input variables: access as `$input.first().json.selectedChunks` and `$input.first().json.selectedChunk`
-- Output variables: return as `return [{ json: { selectedChunks: updatedArray, selectedChunksLength: count } }]`
-- This function has no error handling — add a try/catch in the n8n Code node to handle malformed JSON inputs
-- `selectedChunksLength` is also mapped to `current_fragrance_essence` in some usages — this appears to track how many essences have been chosen so far (used in conditional logic to limit selection to max 5)
-- The output `selectedChunks` is re-serialized as a JSON string; maintain this convention in n8n so downstream Code nodes can parse it consistently

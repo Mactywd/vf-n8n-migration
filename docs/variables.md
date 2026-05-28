@@ -98,29 +98,29 @@ All state variables used in the Alchimista NdC Voiceflow flow.
 
 ## Voiceflow System Variables
 
-These are read-only variables automatically provided by the Voiceflow runtime. They do not need to be migrated to n8n as user-managed state; equivalent values are available natively in n8n.
+These are read-only variables automatically provided by the Voiceflow runtime.
 
-| Variable | Type | Description | n8n equivalent |
-|----------|------|-------------|----------------|
-| `intent_confidence` | number | Confidence score (0–100) for the last matched intent | Not needed (n8n has no intent engine) |
-| `last_event` | any | Last UI event object triggered by the user client | n8n trigger node payload |
-| `last_response` | text | The agent's last text response | n8n AI node output |
-| `last_utterance` | text | The user's last text input | n8n Chat trigger `chatInput` field |
-| `locale` | text | User locale string (e.g. `en-US`, `it-IT`) | n8n `$execution.customData` or webhook header |
-| `platform` | text | Platform name (e.g. `"voiceflow"`) | Static set node: `"n8n"` |
-| `sessions` | number | Number of times the user has opened the app | n8n database / memory node (inferred) |
-| `timestamp` | text | UNIX timestamp (seconds since epoch) | `{{ $now.toUnixInteger() }}` |
-| `user_id` | text | Unique user identifier | n8n Chat trigger session ID |
-| `vf_date` | date | Current date (`Jan 1, 2025`) | `{{ $now.format('LLL d, yyyy') }}` |
-| `vf_day` | number | Current day of month | `{{ $now.day }}` |
-| `vf_memory` | text | Last 10 exchanges as formatted string | n8n AI Agent `memory` node |
-| `vf_month` | text | Current month name (`January`) | `{{ $now.format('MMMM') }}` |
-| `vf_now` | date | Current date + time (`Jan 1, 2025, 16:37`) | `{{ $now.format('LLL d, yyyy, HH:mm') }}` |
-| `vf_time` | text | Current time (`16:37`) | `{{ $now.format('HH:mm') }}` |
-| `vf_transcript_id` | text | Transcript ID for the current conversation | n8n execution ID (`$execution.id`) |
-| `vf_user_timezone` | text | User's timezone string (`America/Toronto`) | Webhook header or session metadata |
-| `vf_weekday` | text | Current weekday name (`Monday`) | `{{ $now.format('cccc') }}` |
-| `vf_year` | number | Current year | `{{ $now.year }}` |
+| Variable | Type | Description |
+|----------|------|-------------|
+| `intent_confidence` | number | Confidence score (0–100) for the last matched intent |
+| `last_event` | any | Last UI event object triggered by the user client |
+| `last_response` | text | The agent's last text response |
+| `last_utterance` | text | The user's last text input |
+| `locale` | text | User locale string (e.g. `en-US`, `it-IT`) |
+| `platform` | text | Platform name (e.g. `"voiceflow"`) |
+| `sessions` | number | Number of times the user has opened the app |
+| `timestamp` | text | UNIX timestamp (seconds since epoch) |
+| `user_id` | text | Unique user identifier |
+| `vf_date` | date | Current date (`Jan 1, 2025`) |
+| `vf_day` | number | Current day of month |
+| `vf_memory` | text | Last 10 exchanges as formatted string |
+| `vf_month` | text | Current month name (`January`) |
+| `vf_now` | date | Current date + time (`Jan 1, 2025, 16:37`) |
+| `vf_time` | text | Current time (`16:37`) |
+| `vf_transcript_id` | text | Transcript ID for the current conversation |
+| `vf_user_timezone` | text | User's timezone string (`America/Toronto`) |
+| `vf_weekday` | text | Current weekday name (`Monday`) |
+| `vf_year` | number | Current year |
 
 ---
 

@@ -60,5 +60,3 @@ START → Type Choice (choice-v2, 2 buttons)
     [home button]     → Set to Home     → perfume_type = "casa"      → (return to caller)
     [personal button] → Set to Personal → perfume_type = "personale" → (return to caller)
 ```
-
-> **Migration note (n8n):** This is a minimal two-branch component. In n8n it maps to a Chat Message trigger (or button-click webhook) followed by an If node with two Set nodes. Since it is currently not called from ROOT, verify whether it should be inserted before the "Get Essences" block or somewhere else in the main flow during migration.

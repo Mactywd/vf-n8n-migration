@@ -144,13 +144,3 @@ export default async function main(args) {
     }
 }
 ```
-
-### n8n Migration Notes
-
-- Map to: Code node (JavaScript mode)
-- Input variables: access as `$input.first().json.finalChunks` and `$input.first().json.defaultLanguage`
-- Output variables: return as `return [{ json: { carouselData: carousel, IDs: chunkIDs, parsed_chunks: chunks } }]`
-- The `trace` return with `type: "carousel"` is Voiceflow-specific; in n8n this function's output (`carouselData`) should be passed to the chat interface (e.g., via an HTTP Response node or a WhatsApp/Telegram node that renders cards)
-- The `simplifiedChunk` spread bug (`...content` where `content` is a string) means card buttons currently carry only `chunkID` plus string characters as keys — this is a latent bug in the original; fix in migration by spreading `parsedContent` instead
-- Language selection logic (`defaultLanguage == "italian"`) controls which description field is used; ensure `default_language` variable is correctly mapped
-- Paths: `success` → continue, `error` → error handler

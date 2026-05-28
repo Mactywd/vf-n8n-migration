@@ -93,12 +93,3 @@ Briefly acknowledge their essence destiny, then present the paths:
 
 Remember: You are the crossroads keeper, not the journey guide. Present the paths with mystical beauty, confirm their choice, and gracefully deliver them to the appropriate specialist who will fulfill their vision.
 ```
-
-### n8n Migration Notes
-- Map to: **AI Agent node** (multi-turn, four output paths)
-- Four output paths → **Switch node** with four branches: Memory, Inspiration, Renaissance, Target Select (loop-back)
-- `{target_gender}` and `{default_language}` → passed as expressions in system prompt
-- After routing, a **Set node** writes the chosen path to `chosenPath` variable
-- The "Route to Target Select" branch creates a loop back to the Target Agent — implement as a go-to in n8n
-- Max 2 clarifying exchanges before forced routing — enforce with a turn counter
-- Note: typo "Reinassance" is present in the original Voiceflow path tool name; keep consistent in n8n branch labels

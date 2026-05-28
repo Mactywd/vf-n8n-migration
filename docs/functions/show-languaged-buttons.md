@@ -58,13 +58,3 @@ export default async function main(args) {
 	}
 }
 ```
-
-### n8n Migration Notes
-
-- Map to: Code node (JavaScript mode)
-- Input variables: access as `$input.first().json.italian_labels`, `$input.first().json.english_labels`, `$input.first().json.default_language`
-- Output: return button array as `return [{ json: { buttons } }]` and pass to the messaging platform's button/quick-reply node
-- Labels are comma-separated plain strings (no JSON serialization) — ensure the upstream variable is formatted as `"Label1,Label2,Label3"` with no extra spaces around commas (or trim after split)
-- The language check is strict equality `=== 'italian'`; any other value (including `'it'`) defaults to English — verify the `default_language` variable value format in the migration
-- This function is the localization-aware version of `Show Buttons`; `Show Buttons` receives a JSON array while this function receives two parallel comma-separated strings
-- No output variable mapping in diagram — purely trace-based rendering

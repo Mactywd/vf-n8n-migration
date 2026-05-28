@@ -62,13 +62,3 @@ export default async function main(args) {
 	}
 }
 ```
-
-### n8n Migration Notes
-
-- Map to: Code node (JavaScript mode)
-- Input variables: access as `$input.first().json.chunk`
-- Output variables: return as `return [{ json: { content: parsedObject } }]`
-- The input `chunk` is expected to be a **JSON array** — only the first element (`[0]`) is used; this is the standard Voiceflow KB response shape
-- The `content` string uses semicolon-separated `Key: Value` pairs; the parser splits on `;` first, then on the first `:` — consistent with the `parseContent` helper used across multiple functions
-- The output `content` is further remapped to different variable names at each call site (`final_essence`, `selectedChunk`, `selectedEssence`) — map accordingly in n8n Set nodes after the Code node
-- Paths: `success` → continue, `error` → error handler

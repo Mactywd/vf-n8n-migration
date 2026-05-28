@@ -59,12 +59,3 @@ try {
   }
 }
 ```
-
-### n8n Migration Notes
-
-- Map to: Code node (JavaScript mode)
-- Input variables: access as `$input.first().json.final_essences` and `$input.first().json.currentEssenceIndex`
-- Output variables: return as `return [{ json: { currentEssence, newEssenceIndex } }]`
-- **Critical bug**: line 4 contains `throw Error(final_essences)` — this immediately throws on every call, making the function always fall through to the `error` path. The actual pagination logic (lines 5 onward) is unreachable dead code. During migration, **remove the `throw` statement**
-- The input vars are read from `args` directly (not `args.inputVars`) — this is inconsistent with other functions; in n8n the Code node receives a single `$input` regardless
-- Paths: `success` → continue (currently unreachable), `error` → error handler (always triggered due to the bug)

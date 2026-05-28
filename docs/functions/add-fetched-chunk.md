@@ -49,12 +49,3 @@ try {
 }
 }
 ```
-
-### n8n Migration Notes
-
-- Map to: Code node (JavaScript mode)
-- Input variables: access as `$input.first().json.current_essences` and `$input.first().json.fetched_essence`
-- Output variables: return as `return [{ json: { new_essences: updatedArray } }]`
-- **Syntax error**: the `return` object on lines 8–17 is missing commas between properties (`outputVars`, `next`, `trace`). This code will throw a `SyntaxError` at parse time, making the function completely non-functional. During migration, add the missing commas
-- The input vars are read from `args` directly (not `args.inputVars`) — inconsistent with most other functions; correct for n8n by using `$input.first().json`
-- Paths: `success` → continue (unreachable due to syntax error), `error` → error handler (always triggered)

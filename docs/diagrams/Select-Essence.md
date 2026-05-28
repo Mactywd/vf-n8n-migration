@@ -87,5 +87,3 @@ START → Create Buttons (Create Essence Buttons fn)
           [match] → New Block 5 (Process Selected Chunk → content)
           [no match] → (exits with no result)
 ```
-
-> **Migration note (n8n):** Map as an Execute Workflow sub-flow. The KB search step (`"Nome: {last_utterance}"`) should query the Voiceflow KB API or equivalent vector store. The two function nodes map to n8n Code nodes. The capture node maps to a Chat Message trigger / wait-for-webhook pattern.

@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Alchimista NdC** is a Voiceflow webchat application for **Note del Chianti** (NdC), an artisan perfumery brand. The app guides users through a conversational journey — collecting memories, preferences, and sensory details — to co-create a personalized fragrance.
 
-The entire project lives in `alchimista.json`, a full Voiceflow v13.09 export (~1.5 MB, ~37,000 lines). The migration goal is to recreate this flow in **n8n** (hosted on Hetzner) using the `mcp__n8n-mcp__*` and `mcp__claude_ai_Hetzner_N8N__*` MCP tools.
+The entire project lives in `alchimista.json`, a full Voiceflow v13.09 export (~1.5 MB, ~37,000 lines).
 
 ## How to Parse the Source File
 
@@ -127,34 +127,21 @@ Meriggio, Respiro d'Amore, Sinfonia Mediterranea, Eden, Alba, Dolce Carezza, 171
 - Returns up to 4–10 chunks per search, paginated via `currentEssenceIndex`
 - KB search nodes query pattern: `"Nome: {essenceName}"` or `"Categoria: {category}"`
 
-## n8n Migration Context
-
-- **Target**: n8n instance on Hetzner
-- **Available MCP tools**: `mcp__n8n-mcp__*` (create/update/validate/test workflows) and `mcp__claude_ai_Hetzner_N8N__*` (execute/search/inspect running workflows)
-- Each Voiceflow diagram should map to an n8n workflow or sub-workflow
-- Voiceflow `response-prompt` nodes (AI text generation) → n8n AI Agent nodes
-- Voiceflow `function` nodes (JS code) → n8n Code nodes
-- Voiceflow `kb-search` nodes → n8n nodes that call the Voiceflow KB API or a replacement vector store
-- Voiceflow `capture-v3` nodes (wait for user input) → n8n Chat trigger / wait-for-webhook pattern
-- Voiceflow `set-v3` nodes (variable assignment) → n8n Set nodes
-- Voiceflow `condition-v3` nodes → n8n If/Switch nodes
-- Voiceflow `component` nodes (sub-flow calls) → n8n Execute Workflow nodes
-
 ## Voiceflow Node Type Reference
 
-| Voiceflow type | Count in ROOT | n8n equivalent |
-|----------------|--------------|----------------|
-| `block` | 101 | Workflow group / sticky note boundary |
-| `set-v3` | 55 | Set node |
-| `response-prompt` | 27 | AI Agent / LLM node |
-| `function` | 26 | Code node |
-| `actions` | 21 | HTTP Request / various action nodes |
-| `condition-v3` | 16 | If / Switch node |
-| `goToNode` | 15 | Execute Workflow / jump |
-| `component` | 17 | Execute Workflow (sub-flow) |
-| `capture-v3` | 9 | Wait for webhook / Chat trigger |
-| `kb-search` | 6 | HTTP Request to KB API |
-| `exit` | 5 | End node |
-| `message` | 4 | Send Message node |
-| `api-v2` | 1 | HTTP Request node |
-| `code` | 2 | Code node |
+| Voiceflow type | Count in ROOT | Description |
+|----------------|--------------|-------------|
+| `block` | 101 | Logical grouping / canvas boundary |
+| `set-v3` | 55 | Variable assignment |
+| `response-prompt` | 27 | AI text generation (LLM call) |
+| `function` | 26 | Custom JS function call |
+| `actions` | 21 | Internal wrapper container |
+| `condition-v3` | 16 | Conditional branching |
+| `goToNode` | 15 | Jump to another node or diagram |
+| `component` | 17 | Sub-flow call (another diagram) |
+| `capture-v3` | 9 | Wait for user input |
+| `kb-search` | 6 | Knowledge base search |
+| `exit` | 5 | End of flow |
+| `message` | 4 | Static text message to user |
+| `api-v2` | 1 | HTTP API call |
+| `code` | 2 | Inline JS code |

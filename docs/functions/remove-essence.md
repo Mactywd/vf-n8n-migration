@@ -60,12 +60,3 @@ export default async function main(args) {
 	}
 }
 ```
-
-### n8n Migration Notes
-
-- Map to: Code node (JavaScript mode)
-- Input variables: access as `$input.first().json.selectedEssence` and `$input.first().json.selectedChunks`
-- Output variables: return as `return [{ json: { filteredChunks: updatedArray } }]`
-- Matching is done by `Nome` field equality — ensure `selectedEssence` objects always include a `Nome` key before calling this function
-- The output variable `filteredChunks` is mapped back to `selectedChunks` in the diagram — update the same variable to maintain state
-- Paths: `success` → continue, `error` → error handler (throws when essence is not found in the selection array)

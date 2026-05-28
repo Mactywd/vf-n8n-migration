@@ -57,13 +57,3 @@ try {
 }
 }
 ```
-
-### n8n Migration Notes
-
-- Map to: Code node (JavaScript mode)
-- Input variables: access as `$input.first().json.italian_labels`, `$input.first().json.english_labels`, `$input.first().json.last_utterance`
-- Output variables: return as `return [{ json: { final_label } }]`
-- This function normalizes multi-language user input back to the canonical Italian label for downstream conditional logic — always call it after `Show Languaged Buttons` captures the user's choice
-- The Italian and English lists must be positionally aligned (same length, same order) — validate upstream that both label strings have matching comma counts
-- If `last_utterance` is already an Italian label (not found in `english_labels`), `final_label` is returned unchanged — this is the pass-through case for Italian-speaking users
-- Paths: `success` → continue, `error` → error handler

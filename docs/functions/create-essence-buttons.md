@@ -92,12 +92,3 @@ export default async function main(args) {
     }
 }
 ```
-
-### n8n Migration Notes
-
-- Map to: Code node (JavaScript mode)
-- Input variables: access as `$input.first().json.selectedChunks`
-- Output: the carousel object should be passed to the UI layer — in n8n, return it as `return [{ json: { carousel } }]` and send via HTTP Response / chat node
-- Unlike `Create Carousel`, this function operates on **already-parsed** essence objects (not raw KB chunks), so there is no `parseContent` step
-- The `select_essence` intent entity payload (`selectedChunk`) embeds the full chunk JSON — in n8n this maps to a button action that carries the chosen essence in its payload
-- Paths: `success` → continue, `error` → error handler

@@ -27,11 +27,3 @@ export default async function main(args) {
   };
 }
 ```
-
-### n8n Migration Notes
-
-- Map to: Code node (JavaScript mode)
-- This function is a **placeholder stub** — it was never implemented (body is the Voiceflow default "Hello World" template)
-- It is not referenced by any diagram node, so it has no live callers
-- During migration, either skip this function entirely or implement it based on the intended behavior (likely: build a carousel from essence data, similar to `Create Carousel`)
-- If implemented, follow the same pattern as `create-carousel.md` but scoped to essence objects rather than raw KB chunks

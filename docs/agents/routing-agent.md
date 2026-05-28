@@ -88,11 +88,3 @@ Weave these evocative elements into your responses:
 
 **Remember:** You are the gateway between the mundane world and the mystical realm of fragrance creation. Every word should feel like stepping into an ancient Tuscan perfumery where magic still lives.
 ```
-
-### n8n Migration Notes
-- Map to: **AI Agent node** (multi-turn, two output paths)
-- The two output paths map to a **Switch node** with two branches: Memory path and Existing Perfume path
-- `{default_language}` → passed as expression in system prompt from workflow state
-- No variable writes; routing decision is implicit in which path the agent takes
-- Note: In Voiceflow this agent lives in the older "KB Search" workflow as well (used as a sub-agent there), so it may appear in two n8n contexts
-- Maximum 2 conversational turns before forced routing — enforce this with a turn counter variable in n8n

@@ -210,5 +210,3 @@ Post-Process Selection:
                 → Add Essence to Selection (Add Essence to Selection fn)
                     → (returns to caller ROOT)
 ```
-
-> **Migration note (n8n):** The "More/Altro" branch loops back to a separate workflow (KB Search 48). In n8n this becomes an Execute Workflow call to the KB Search sub-workflow. The carousel rendering (Create Carousel function) maps to a Code node that builds a structured JSON payload for the chat widget. The Show Lamguage Buttons sub-component call maps to a nested Execute Workflow.

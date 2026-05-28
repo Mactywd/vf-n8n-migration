@@ -281,13 +281,3 @@ Lasts 6+ hours
 
 (...continue...)
 ```
-
-### n8n Migration Notes
-- Map to: **AI Agent node** (multi-turn, two output paths)
-- Version 2 is the active production agent; Version 1 is legacy
-- Two output paths → **Switch node** with two branches: "Create Essence Selection" (triggers KB search sub-workflow) and "Perfume Naming" (jumps to naming ritual)
-- The `enough_info` boolean variable acts as a signal flag elsewhere in the flow; when this agent routes to "Create Essence Selection," set `enough_info = true` in a downstream **Set node**
-- `{target_gender}` and `{default_language}` → passed as expressions in system prompt
-- The agent drives 6–10 turns of conversation; consider storing conversation history in a `memory_description` accumulator variable updated after each turn
-- The "Perfume Naming" branch fires after the 5th essence is gathered — track essence count via `selectedChunks` array length; trigger automatically when `length >= 5`
-- Version 2 has KB access enabled (`knowledgeBaseTool.enabled: true`) but its primary purpose is asking questions, not KB lookups

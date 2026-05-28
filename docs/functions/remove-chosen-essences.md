@@ -93,14 +93,3 @@ export default async function main(args) {
   }
 }
 ```
-
-### n8n Migration Notes
-
-- Map to: Code node (JavaScript mode)
-- Input variables: access as `$input.first().json.selectedChunks`, `$input.first().json.kbChunks`, `$input.first().json.blacklistEssences`
-- Output variables: return as `return [{ json: { processedChunks } }]`
-- This function is the de-duplication gate in the KB Search loop — it removes already-selected and blacklisted essences from fresh KB results before showing them to the user
-- The `blacklistEssences` handling has a dual-format try/catch: if `blacklistedEssence.content` exists it parses it; otherwise treats the object as already parsed — replicate this defensive logic in n8n
-- Note: `beforeAltro` and `prevCarousel` appear in the inputMapping of some call-sites but are not used in the function body — they are safe to ignore during migration
-- The `parseContent` helper uses `split(":")` on each pair (not `indexOf(":")`) — this means values containing `:` get truncated; a known limitation of the original implementation
-- Paths: `success` → continue, `error` → error handler

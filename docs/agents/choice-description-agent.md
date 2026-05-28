@@ -151,12 +151,3 @@ Warms the memory with its golden softness, like warm sand beneath your feet.
 ## Language
 {default_language} 
 ```
-
-### n8n Migration Notes
-- Map to: **Basic LLM Chain node** (single-turn, no branching, no tool use)
-- Runs after Long Thought in the KB Search sub-workflow pipeline
-- Input: `long_thought` variable (from the Essence Selection Agent Long Thought step) + `selectedChunks` + `default_language`
-- Output: stored in `essence_description` variable via a downstream **Set node**
-- The output is the text displayed to the user before the essence carousel — it is a chat message, not a structured object
-- Note: the model `gpt-oss-120b` is an internal Voiceflow alias; migrate to `gpt-4.5-preview` or `gpt-4o` in n8n
-- Essence names in the output must never be translated — apply this constraint as a post-processing check in n8n if needed

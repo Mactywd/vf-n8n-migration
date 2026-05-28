@@ -129,15 +129,3 @@ export default async function main(args) {
   }
 }
 ```
-
-### n8n Migration Notes
-
-- Map to: Code node (JavaScript mode)
-- Input variables: access as `$input.first().json.essences` and `$input.first().json.essenceNames`
-- Output variables: return as `return [{ json: { rightChunks, excludedChunks } }]`
-- This is the most widely-called function (10+ call sites across 4 diagrams) — it acts as the filter/router between the AI agent's named essence recommendations and the raw KB results
-- The `normalizeText` helper handles Unicode whitespace and curly-apostrophe variants (common in Italian text) — replicate this normalization in n8n
-- The `essences` input accepts multiple formats (raw array, `{ chunks: [...] }` object, JSON string of either) — handle all three shapes in the n8n Code node
-- `rightChunks` output is mapped to many different variable names at different call sites; use n8n Set nodes after the Code node to assign to the correct workflow variable
-- Throws (goes to `error` path) if zero matching chunks are found — this is a valid exit condition when an AI-suggested essence name doesn't exist in the KB
-- Paths: `success` → continue, `error` → error handler

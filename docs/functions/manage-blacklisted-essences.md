@@ -94,14 +94,3 @@ export default async function main(args) {
 	}
 }
 ```
-
-### n8n Migration Notes
-
-- Map to: Code node (JavaScript mode)
-- Input variables: access as `$input.first().json.blacklistEssences`, `$input.first().json.newEssences`, `$input.first().json.action`
-- Output variables: return as `return [{ json: { updatedEssences } }]`
-- Note a potential bug in the original: the `add` action debug message says "removing blacklisted items" but actually **adds** new essences to the blacklist (concatenates `parsedEssences` + `parsedBlacklist`); the description is misleading
-- Both `newEssences` and `blacklistEssences` are parsed from raw KB chunks (with `item.content` field) — the function always re-parses both lists; there is no "already parsed" fallback unlike in `Remove Chosen Essences`
-- In the `reset` action, `newEssences` and `blacklistEssences` are still JSON-parsed (lines before the if/else) even though their values are discarded — ensure valid JSON is always passed even when resetting
-- The output variable `updatedEssences` is mapped back to `blacklistEssences` in the diagram (and one typo variant `updatesEssences` also maps to `blacklistEssences`)
-- Paths: `success` → continue, `error` → error handler

@@ -91,14 +91,3 @@ export default async function main(args) {
 	}
 }
 ```
-
-### n8n Migration Notes
-
-- Map to: Code node (JavaScript mode)
-- Input variables: access all from `$input.first().json.*` (e.g. `$input.first().json.perfumeName`)
-- Output variables: return as `return [{ json: { generalInfo: JSON.stringify(generalInfo) } }]`
-- This is the **final assembly step** of the creation journey — called once at `Finish Perfume Creation` in ROOT; its output (`generalInfo`) is the structured payload sent to the perfumer or stored for order fulfillment
-- The `notes` field extracts only the `Nome` property from each selected chunk — ensure all chunks in `selectedChunks` have been through `Process Selected Chunk` or `Post Process Essences` before this function runs
-- `intensifiedCategory` input appears as `intensifiedEssence` in some inputMappings but the code reads it as `inputVars.intensifiedCategory` — pass it under the correct key
-- On error, returns an empty `{}` object rather than throwing — the workflow continues silently; add explicit error logging in n8n if needed
-- No `next` path ports used — single output path only

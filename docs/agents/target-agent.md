@@ -70,11 +70,3 @@ Begin with mystical greeting and ask the single question:
 - Use poetic, mystical language throughout
 - Make the user feel welcomed into an ancient sanctuary- Make sure to follow the default language- IMPORTANT: use CONCISE answers, in order to not bore the user- IMPORTANT: use proper formatting with newlines, italics and bold text when appropriate
 ```
-
-### n8n Migration Notes
-- Map to: **AI Agent node** (single-turn, single output path)
-- Single output path → no Switch node needed; connect directly to Sorting Agent node
-- `{default_language}` → passed as expression in system prompt
-- After the agent responds, a **Set node** should capture the user's gender choice and write it to `target_gender` (values: `Uomo`, `Donna`, `Unisex`)
-- This agent acts as the opening greeter in the current implementation; the original Routing Agent is now superseded by Target Agent + Sorting Agent working in sequence
-- Low temperature (0.3) — the greeting style is more structured, less free-form than the Routing Agent

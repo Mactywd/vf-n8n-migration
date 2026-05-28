@@ -145,5 +145,3 @@ TRIGGER
 
 markup_text: standalone annotation node (orphan)
 ```
-
-> **Migration note:** This 24-node version is the older TOPIC-based design. The 48-node COMPONENT version (`KB-Search-48.md`) is the active production flow. When migrating to n8n, use the 48-node version as the primary reference; this file documents the legacy architecture for context.

@@ -80,5 +80,3 @@ TRIGGER
 |----------|-----------|-------------|
 | `usecaseinfo` | output | User's description of the use case / occasion for the perfume |
 | `examplesusage` | output | User's description of usage examples / occasions |
-
-> **Migration note (n8n):** This is a simple two-question → AI-generation flow. In n8n it maps to: Chat Message trigger → two sequential "Send Message + Wait for Reply" pairs → an AI Agent node (LLM call with `usecaseinfo` + `examplesusage` as context). The `response-prompt` node maps to an n8n AI Agent node. Confirm whether this flow should be integrated into the main ROOT conversation (e.g. after `Finish Perfume Creation`) or remain a separate utility workflow.

@@ -93,5 +93,3 @@ START → New Block 1 (Show Languaged Buttons fn — renders italian or english 
 | `default_language` | input (global) | `"italian"` or `"english"` — selects which label set to display |
 | `last_utterance` | output (global) | Raw user selection captured by Voiceflow |
 | `final_label` | output | Canonical English value of the user's selection (used by callers in conditions) |
-
-> **Migration note (n8n):** This component is called from 17 places in ROOT and sub-diagrams. In n8n it should become a reusable sub-workflow that accepts `italian_labels`, `english_labels`, and `default_language` as inputs, returns `final_label`. The language-selection logic (Show Languaged Buttons function) and Italian→English translation (Find Italian Choice function) both map to Code nodes. The capture step maps to a Chat Message trigger / wait-for-webhook.

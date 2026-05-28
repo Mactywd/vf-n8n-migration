@@ -302,14 +302,3 @@ You must answer in {default_language}.{memory_description}
 ```
 
 ---
-
-### n8n Migration Notes
-- Map Fast Thought → **Basic LLM Chain node** (not a full AI Agent; no tool use)
-- Map Long Thought → **Basic LLM Chain node** chained after Fast Thought
-- The named agent (`68934cf9f206c1eb0811c0c1`) is a consolidated single-step alternative; prefer the two-step pipeline for quality
-- Pipeline order: KB Search → Fast Thought → Long Thought → Choice Description Agent → display carousel to user
-- `{kb_results}` feeds from a preceding KB search HTTP Request node
-- `{memory_description}` is produced by the `Extract Memory Description` prompt node (also a `response-prompt` in ROOT)
-- After Long Thought, `long_thought` is stored in a variable via a **Set node**
-- The `essences` and `categories` variables are extracted from the Long Thought output via the "Extract Essences" and "Extract Categories" prompt nodes (additional `response-prompt` nodes in the pipeline)
-- The entire pipeline runs inside the KB Search sub-workflow, not directly in ROOT

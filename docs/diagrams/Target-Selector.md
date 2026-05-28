@@ -89,5 +89,3 @@ START → New Block 5
         "Per Lei" / "For Her"     → SET target_gender = "Donna"  → (return to ROOT)
         "Per Entrambi" / "For Both" → SET target_gender = "Unisex" → (return to ROOT)
 ```
-
-> **Migration note (n8n):** This component is a single-turn interaction: present 3 buttons, capture one click, write one variable. In n8n it maps to a Switch node with 3 branches, each ending with a Set node. The Show Lamguage Buttons sub-component call should be inlined or called as a nested Execute Workflow to render localised buttons.
